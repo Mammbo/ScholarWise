@@ -1,10 +1,10 @@
 
 import xlsx, { IJsonSheet } from "json-as-xlsx"
+import { getScholarships } from "./actions";
 
 async function getData() {
     // fetch data from your db's api
-    const res = await fetch("https://api.mockaroo.com/api/040055b0?count=1000&key=7b52ed80")
-    const data = await res.json()
+    let data = await getScholarships();
     return data
   }
   
