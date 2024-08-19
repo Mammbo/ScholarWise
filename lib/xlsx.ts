@@ -20,7 +20,7 @@ export default async function downloadToCSV() {
                 {label: "Deadline", value: "deadline"},
                 {label: "Scholarship Name", value: "name"},
                 {label: "Requirements", value: "requirements"},
-                {label: "Link", value: "link"},
+                {label: "Link", value: "url"},
             ],
             content: data
         },
