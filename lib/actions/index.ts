@@ -4,8 +4,6 @@ import { revalidatePath } from "next/cache";
 import Scholarship from "../models/scholarship.model";
 import { connectToDB } from "../mongoose";
 import { scrapeScholarshipWebsiteACT, scrapeScholarshipWebsiteAppily, scrapeScholarshipWebsiteCareerOneStop, scrapeScholarshipWebsiteCollegeBoard, scrapeScholarshipWebsiteJLVCounseling } from "../scraper";
-import mongoose from "mongoose";
-
 
 
 export async function scrapeAndStoreScholarship() {
@@ -79,7 +77,7 @@ export async function getScholarships() {
 
     const scholarships = Scholarship.find({});
     const plainScholarships = (await scholarships).map(Scholarship => Scholarship.toObject());
-    //console.log(plainScholarships)
+    console.log(plainScholarships)
     
     return plainScholarships
 
