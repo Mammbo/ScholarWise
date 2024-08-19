@@ -23,7 +23,7 @@ export type scholarship = {
   deadline: string 
   name: string 
   requirements: string 
-  link: string
+  url: string
 }
 
 export const statuses = [
@@ -90,13 +90,19 @@ export const columns: ColumnDef<scholarship>[] = [
         ),
 
     cell: ({ row }) => {
-      const amount = parseFloat(row.getValue("amount"))
-      const formatted = new Intl.NumberFormat("en-US", {
-        style: "currency",
-        currency: "USD",
-      }).format(amount)
- 
-      return <div className="font-medium">{formatted}</div>
+      const amount = row.getValue("amount") as string;
+
+      if (amount === '') {
+        return <div className="font-medium">Varires or N/A</div>
+      } else {
+        const parsedAmount = parseFloat(amount)
+        const formatted = new Intl.NumberFormat("en-US", {
+          style: "currency",
+          currency: "USD",
+        }).format(parsedAmount)
+        return <div className="font-medium">{formatted}</div>
+      }
+
     },
   },
   {
@@ -106,9 +112,15 @@ export const columns: ColumnDef<scholarship>[] = [
             <DataTableColumnHeader column={column} title="Deadline" />
         ),
     cell: ({ row }) => {
-        const date = new Date(row.getValue('deadline'))
-        const formatted = date.toLocaleDateString()
-        return formatted
+        const date = row.getValue('deadline') as string;
+
+        if (date === '') {
+          return 'N/A'
+        } else {
+          const convertedDate = new Date(date)
+          const formatted = convertedDate.toLocaleDateString()
+          return formatted
+        }
     }
   },
   {
@@ -123,10 +135,10 @@ export const columns: ColumnDef<scholarship>[] = [
     header: "Requirements/Info",
   },
   {
-    accessorKey: "link",
+    accessorKey: "url",
     header: "Link",
     cell: ({ row }) => {
-        const url = row.original.link;
+        const url = row.original.url;
         return <a className="text-blue-500"href={url} target="_blank" rel="noopener noreferrer">Link</a>
     }
   },
@@ -147,7 +159,7 @@ export const columns: ColumnDef<scholarship>[] = [
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
             <DropdownMenuItem
-              onClick={() => navigator.clipboard.writeText(scholarship.link)}
+              onClick={() => navigator.clipboard.writeText(scholarship.url)}
             >
               Copy Scholarship Link
             </DropdownMenuItem>

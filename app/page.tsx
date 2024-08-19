@@ -4,12 +4,13 @@ import HeroCarousel from '@/components/HeroCarousel'
 import { scholarship, columns } from "./columns"
 import { DataTable } from "@/components/data-table"
 import SearchBar from '@/components/SearchBar'
+import { getScholarships } from '@/lib/actions'
+import mongoose from 'mongoose'
 
 
 async function getData(): Promise<scholarship[]> {
   // fetch data from your db's api
-  const res = await fetch("https://my.api.mockaroo.com/scholarship_data.json?key=7b52ed80")
-  const data = await res.json()
+  let data = await getScholarships();
   return data
 }
 

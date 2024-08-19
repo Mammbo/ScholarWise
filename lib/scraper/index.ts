@@ -172,9 +172,9 @@ export async function scrapeScholarshipWebsiteACT(url: string) {
     // Select all table rows within the panel-body
         $('div.panel-body table tbody tr').each((index, element) => { 
             const titleElement = $(element).find('td').eq(0).find('a');
-            const title = titleElement.text().trim();
-            const deadline = $(element).find('td').eq(2).text().trim();
-            const amount = ($(element).find('td').eq(4).text().trim()).replace(/\D/g, '');
+            const name = titleElement.text().trim();
+            const unalteredDeadline = $(element).find('td').eq(2).text().trim();
+            const amount = ($(element).find('td').eq(4).text().trim()).match(/\d+(\,\d{3})*(\.\d+)?/)?.[0].replace(/\D/g, '') || "";
             const url = titleElement.attr('href') || '';
             const requirement1 = $(element).find('td').eq(2).text().trim();
             const requirement2 = $(element).find('td').eq(3).text().trim();
@@ -185,21 +185,21 @@ export async function scrapeScholarshipWebsiteACT(url: string) {
 
             // get proper date 
 
-            const formattedDeadline = getDeadline(deadline)
+            const deadline = getDeadline(unalteredDeadline)
 
-            console.log({url, title, formattedDeadline, amount, requirements})
+            //console.log({url, name, formattedDeadline, amount, requirements})
 
             // push into one var and then return 
 
-            if (title && url) {
+            if (name !== '' && url !== '') {
                 scholarships.push({
-                    title,
+                    name,
                     deadline,
                     amount,
                     url,
                     requirements,
                      
-                });
+                }); 
             // clean data and if there is not the data i want replace it with 'N/A or Varies' or if i put where it only accepts the numbers if there is nothing in a place put varies/ doesnt exist 
             }
         });
